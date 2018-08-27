@@ -1,0 +1,27 @@
+version: '2'
+
+services:
+ flaskapp:
+    build: ./flaskapp
+    image: flaskapp
+    networks:
+        - 'app'
+    command: python app.py
+
+ proxy:
+    build: ./nginx
+    image: proxy
+    ports:
+        - '8082:80'
+    networks:
+        - 'app'
+    depends_on:
+        - 'flaskapp'
+
+ redis:
+    image: redis
+    networks: 
+         - 'app'
+     
+networks:
+    app:
